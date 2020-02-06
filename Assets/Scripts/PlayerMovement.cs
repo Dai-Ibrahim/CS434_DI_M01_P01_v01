@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
     // Define all public variables 
 	public Rigidbody rb;
    	public float forwardsForce = 2000f;
-	public float sidwaysForce = 500f;
+	public float sidewaysForce = 500f;
 
     void FixedUpdate()
     {
@@ -16,11 +16,17 @@ public class PlayerMovement : MonoBehaviour
 		//Get user input and move object accordingly
 		if (Input.GetKey("d"))
 		{
-			rb.AddForce(sidwaysForce*Time.deltaTime,0,0, ForceMode.VelocityChange);
+			Command moveRight = new MoveRight(rb, sidewaysForce);
+            Invoker invoker = new Invoker();
+            invoker.SetCommand(moveRight);
+            invoker.ExecuteCommand();
 		}
 		if (Input.GetKey("a"))
 		{
-			rb.AddForce(-sidwaysForce*Time.deltaTime,0,0,ForceMode.VelocityChange);
+			Command moveLeft = new MoveLeft(rb, sidewaysForce);
+            Invoker invoker = new Invoker();
+            invoker.SetCommand(moveLeft);
+            invoker.ExecuteCommand();
 		}
 		//End game if the object falls off the platform
 		if (rb.position.y < -1f)
@@ -28,6 +34,8 @@ public class PlayerMovement : MonoBehaviour
 			FindObjectOfType<GameManager>().EndGame();
 
 		}
+		
+		
 
     }
 }
